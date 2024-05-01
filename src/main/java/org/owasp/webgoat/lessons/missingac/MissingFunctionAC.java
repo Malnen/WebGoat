@@ -31,9 +31,9 @@ import org.springframework.stereotype.Component;
 public class MissingFunctionAC extends Lesson {
 
     @Value("simple.salt.password")
-    public static String PASSWORD_SALT_SIMPLE = "DeliberatelyInsecure1234";
+    public static String PASSWORD_SALT_SIMPLE;
     @Value("admin.salt.password")
-    public static String PASSWORD_SALT_ADMIN = "DeliberatelyInsecure1235";
+    public static String PASSWORD_SALT_ADMIN;
 
     @Override
     public Category getDefaultCategory() {

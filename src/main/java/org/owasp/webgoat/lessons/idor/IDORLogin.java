@@ -41,10 +41,10 @@ import java.util.Map;
 public class IDORLogin extends AssignmentEndpoint {
 
     @Value("tom.password")
-    public static String TOM_PASSWORD = "cat";
+    public static String TOM_PASSWORD;
 
     @Value("bill.password")
-    public static String BILL_PASSWORD = "buffalo";
+    public static String BILL_PASSWORD;
 
     private Map<String, Map<String, String>> idorUserInfo = new HashMap<>();
 
