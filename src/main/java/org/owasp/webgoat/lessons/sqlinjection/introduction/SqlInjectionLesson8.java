@@ -73,28 +73,23 @@ public class SqlInjectionLesson8 extends AssignmentEndpoint {
             log(connection, query);
 
             try (ResultSet results = statement.executeQuery()) {
-                if (results.getStatement() != null) {
-                    if (results.first()) {
-                        output.append(generateTable(results));
-                        results.last();
+                if (results.next()) {
+                    output.append(generateTable(results));
 
-                        if (results.getRow() > 1) {
-                            // more than one record, the user succeeded
-                            return success(this)
-                                    .feedback("sql-injection.8.success")
-                                    .output(output.toString())
-                                    .build();
-                        } else {
-                            // only one record
-                            return failed(this).feedback("sql-injection.8.one").output(output.toString()).build();
-                        }
-
+                    // Check if there are more than one record
+                    if (results.next()) {
+                        // more than one record, the user succeeded
+                        return success(this)
+                                .feedback("sql-injection.8.success")
+                                .output(output.toString())
+                                .build();
                     } else {
-                        // no results
-                        return failed(this).feedback("sql-injection.8.no.results").build();
+                        // only one record
+                        return failed(this).feedback("sql-injection.8.one").output(output.toString()).build();
                     }
                 } else {
-                    return failed(this).build();
+                    // no results
+                    return failed(this).feedback("sql-injection.8.no.results").build();
                 }
             } catch (SQLException e) {
                 return failed(this)
@@ -112,32 +107,27 @@ public class SqlInjectionLesson8 extends AssignmentEndpoint {
     public static String generateTable(ResultSet results) throws SQLException {
         ResultSetMetaData resultsMetaData = results.getMetaData();
         int numColumns = resultsMetaData.getColumnCount();
-        results.beforeFirst();
         StringBuilder table = new StringBuilder();
         table.append("<table>");
 
-        if (results.next()) {
+        // Generate table headers
+        table.append("<tr>");
+        for (int i = 1; i <= numColumns; i++) {
+            table.append("<th>").append(resultsMetaData.getColumnName(i)).append("</th>");
+        }
+        table.append("</tr>");
+
+        // Generate table rows
+        do {
             table.append("<tr>");
-            for (int i = 1; i < (numColumns + 1); i++) {
-                table.append("<th>" + resultsMetaData.getColumnName(i) + "</th>");
+            for (int i = 1; i <= numColumns; i++) {
+                table.append("<td>").append(results.getString(i)).append("</td>");
             }
             table.append("</tr>");
-
-            results.beforeFirst();
-            while (results.next()) {
-                table.append("<tr>");
-                for (int i = 1; i < (numColumns + 1); i++) {
-                    table.append("<td>" + results.getString(i) + "</td>");
-                }
-                table.append("</tr>");
-            }
-
-        } else {
-            table.append("Query Successful; however no data was returned from this query.");
-        }
+        } while (results.next());
 
         table.append("</table>");
-        return (table.toString());
+        return table.toString();
     }
 
     public static void log(Connection connection, String action) {
@@ -146,12 +136,13 @@ public class SqlInjectionLesson8 extends AssignmentEndpoint {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(cal.getTime());
 
-        String logQuery =
-                "INSERT INTO access_log (time, action) VALUES ('" + time + "', '" + action + "')";
+        String logQuery = "INSERT INTO access_log (time, action) VALUES (?, ?)";
 
         try {
-            Statement statement = connection.createStatement(TYPE_SCROLL_SENSITIVE, CONCUR_UPDATABLE);
-            statement.executeUpdate(logQuery);
+            PreparedStatement preparedStatement = connection.prepareStatement(logQuery);
+            preparedStatement.setString(1, time);
+            preparedStatement.setString(2, action);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
