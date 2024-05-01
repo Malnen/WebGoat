@@ -1,5 +1,8 @@
 package org.owasp.webgoat.container.users;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
@@ -48,10 +51,19 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  private void createLessonsForUser(WebGoatUser webGoatUser) {
-    jdbcTemplate.execute("CREATE SCHEMA \"" + webGoatUser.getUsername() + "\" authorization dba");
-    flywayLessons.apply(webGoatUser.getUsername()).migrate();
-  }
+    private void createLessonsForUser(WebGoatUser webGoatUser) {
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            String schemaCreationQuery = "CREATE SCHEMA IF NOT EXISTS ? AUTHORIZATION dba";
+            try (PreparedStatement statement = connection.prepareStatement(schemaCreationQuery)) {
+                statement.setString(1, webGoatUser.getUsername());
+                statement.execute();
+            }
+
+            flywayLessons.apply(webGoatUser.getUsername()).migrate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your application's error handling strategy
+        }
+    }
 
   public List<WebGoatUser> getAllUsers() {
     return userRepository.findAll();
