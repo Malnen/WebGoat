@@ -32,6 +32,7 @@
 package org.owasp.webgoat.container;
 
 import java.io.File;
+
 import org.owasp.webgoat.container.session.UserSessionData;
 import org.owasp.webgoat.container.session.WebSession;
 import org.owasp.webgoat.container.users.UserRepository;
@@ -45,6 +46,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.client.RestTemplate;
@@ -55,34 +57,42 @@ import org.springframework.web.client.RestTemplate;
 @EnableAutoConfiguration
 public class WebGoat {
 
-  @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-  @Bean(name = "pluginTargetDirectory")
-  public File pluginTargetDirectory(@Value("${webgoat.user.directory}") final String webgoatHome) {
-    return new File(webgoatHome);
-  }
+    @Autowired
+    private Environment environment;
 
-  @Bean
-  @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-  public WebSession webSession() {
-    WebGoatUser webGoatUser = null;
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (principal instanceof WebGoatUser) {
-      webGoatUser = (WebGoatUser) principal;
-    } else if (principal instanceof DefaultOAuth2User) {
-      webGoatUser = userRepository.findByUsername(((DefaultOAuth2User) principal).getName());
+    @Bean(name = "pluginTargetDirectory")
+    public File pluginTargetDirectory(@Value("${webgoat.user.directory}") final String webgoatHome) {
+        return new File(webgoatHome);
     }
-    return new WebSession(webGoatUser);
-  }
 
-  @Bean
-  @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-  public UserSessionData userSessionData() {
-    return new UserSessionData("test", "data");
-  }
+    @Bean
+    @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public WebSession webSession() {
+        WebGoatUser webGoatUser = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof WebGoatUser) {
+            webGoatUser = (WebGoatUser) principal;
+        } else if (principal instanceof DefaultOAuth2User) {
+            webGoatUser = userRepository.findByUsername(((DefaultOAuth2User) principal).getName());
+        }
+        return new WebSession(webGoatUser);
+    }
 
-  @Bean
-  public RestTemplate restTemplate() {
-    return new RestTemplate();
-  }
+    @Bean
+    @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public UserSessionData userSessionData() {
+        return new UserSessionData("test", "data");
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    public String getJerryPassword() {
+        return environment.getProperty("jerry.password");
+    }
 }
