@@ -1,7 +1,5 @@
 package org.owasp.webgoat.lessons.challenges.challenge1;
 
-import static org.owasp.webgoat.lessons.challenges.SolutionConstants.PASSWORD;
-
 import lombok.RequiredArgsConstructor;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AttackResult;
