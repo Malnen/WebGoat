@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Random;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +17,7 @@ public class ImageServlet {
 
   public static final int PINCODE = new Random().nextInt(10000);
 
-  @RequestMapping(
-      method = {GET, POST},
+  @GetMapping(
       value = "/challenge/logo",
       produces = MediaType.IMAGE_PNG_VALUE)
   @ResponseBody

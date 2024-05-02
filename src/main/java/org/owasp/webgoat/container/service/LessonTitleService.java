@@ -3,6 +3,7 @@ package org.owasp.webgoat.container.service;
 import org.owasp.webgoat.container.lessons.Lesson;
 import org.owasp.webgoat.container.session.WebSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +27,7 @@ public class LessonTitleService {
    *
    * @return a {@link java.lang.String} object.
    */
-  @RequestMapping(path = "/service/lessontitle.mvc", produces = "application/html")
+  @GetMapping(path = "/service/lessontitle.mvc", produces = "application/html")
   public @ResponseBody String showPlan() {
     Lesson lesson = webSession.getCurrentLesson();
     return lesson != null ? lesson.getTitle() : "";

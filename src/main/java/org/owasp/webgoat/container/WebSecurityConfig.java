@@ -88,8 +88,11 @@ public class WebSecurityConfig {
             })
         .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        .csrf(csrf -> csrf.disable())
-        .headers(headers -> headers.disable())
+
+            .csrf()
+            .and()
+        .headers()
+            .and()
         .exceptionHandling(
             handling ->
                 handling.authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/login")))
