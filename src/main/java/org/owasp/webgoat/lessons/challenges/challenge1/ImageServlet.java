@@ -4,6 +4,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Random;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ImageServlet {
 
-  public static final int PINCODE = new Random().nextInt(10000);
+  public static final int PINCODE = new SecureRandom().nextInt(10000);
 
   @GetMapping(
       value = "/challenge/logo",

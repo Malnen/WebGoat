@@ -23,6 +23,8 @@
 package org.owasp.webgoat.lessons.cryptography;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
@@ -49,7 +51,7 @@ public class EncodingAssignment extends AssignmentEndpoint {
     String username = request.getUserPrincipal().getName();
     if (basicAuth == null) {
       String password =
-          HashingAssignment.SECRETS[new Random().nextInt(HashingAssignment.SECRETS.length)];
+          HashingAssignment.SECRETS[new SecureRandom().nextInt(HashingAssignment.SECRETS.length)];
       basicAuth = getBasicAuth(username, password);
       request.getSession().setAttribute("basicAuth", basicAuth);
     }

@@ -23,6 +23,8 @@
 package org.owasp.webgoat.lessons.csrf;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -54,13 +56,13 @@ public class CSRFGetFlag {
 
     if (referer.equals("NULL")) {
       if ("true".equals(req.getParameter("csrf"))) {
-        Random random = new Random();
+        Random random = new SecureRandom();
         userSessionData.setValue("csrf-get-success", random.nextInt(65536));
         response.put("success", true);
         response.put("message", pluginMessages.getMessage("csrf-get-null-referer.success"));
         response.put("flag", userSessionData.getValue("csrf-get-success"));
       } else {
-        Random random = new Random();
+        Random random = new SecureRandom();
         userSessionData.setValue("csrf-get-success", random.nextInt(65536));
         response.put("success", true);
         response.put("message", pluginMessages.getMessage("csrf-get-other-referer.success"));
@@ -71,7 +73,7 @@ public class CSRFGetFlag {
       response.put("message", "Appears the request came from the original host");
       response.put("flag", null);
     } else {
-      Random random = new Random();
+      Random random = new SecureRandom();
       userSessionData.setValue("csrf-get-success", random.nextInt(65536));
       response.put("success", true);
       response.put("message", pluginMessages.getMessage("csrf-get-other-referer.success"));

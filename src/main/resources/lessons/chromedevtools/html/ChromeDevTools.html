@@ -50,7 +50,10 @@
                 // sample custom javascript in the recommended way ...
                 // a namespace has been assigned for it, but you can roll your own if you prefer
                 document.getElementById("btn").addEventListener("click", function() {
-                    document.getElementById("networkNum").value = Math.random() * 100;
+                    const array = new Uint32Array(1);
+                    crypto.getRandomValues(array);
+                    let randomValue = array[0] / 4294967295;
+                    document.getElementById("networkNum").value = randomValue * 100;
                     document.getElementById("networkNumCopy").value = document.getElementById("networkNum").value;
                 });
             </script>
