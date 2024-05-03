@@ -5449,7 +5449,7 @@ wysihtml5.dom.replaceWithChildNodes = function (node) {
 
                     // Setting the src like this prevents ssl warnings in IE6
                     if (wysihtml5.browser.throwsMixedContentWarningWhenIframeSrcIsEmpty()) {
-                        iframe.src = "javascript:'<html></html>'";
+                        iframe.src = "about:blank";
                     }
 
                     iframe.onload = function () {
@@ -9355,7 +9355,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
                         // 'javascript:;' and unselectable=on Needed for IE, but done in all browsers to make sure that all get the same css applied
                         // (you know, a:link { ... } doesn't match anchors with missing href attribute)
                         dom.setAttributes({
-                            href: "javascript:;",
+                            href: "#",
                             unselectable: "on"
                         }).on(links[i]);
                     }
