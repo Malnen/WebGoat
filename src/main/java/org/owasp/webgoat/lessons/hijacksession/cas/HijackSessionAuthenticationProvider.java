@@ -77,7 +77,7 @@ public class HijackSessionAuthenticationProvider implements AuthenticationProvid
   }
 
   protected void authorizedUserAutoLogin() {
-    if (!PROBABILITY_DOUBLE_PREDICATE.test(ThreadLocalRandom.current().nextDouble())) {
+    if (!PROBABILITY_DOUBLE_PREDICATE.test(new SecureRandom().nextDouble())) {
       Authentication authentication = AUTHENTICATION_SUPPLIER.get();
       authentication.setAuthenticated(true);
       addSession(authentication.getId());

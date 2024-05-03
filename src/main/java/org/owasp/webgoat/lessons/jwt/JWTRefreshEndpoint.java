@@ -42,6 +42,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
+import org.owasp.webgoat.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -99,7 +100,7 @@ public class JWTRefreshEndpoint extends AssignmentEndpoint {
                         .signWith(io.jsonwebtoken.SignatureAlgorithm.HS512, JWT2_PASSWORD)
                         .compact();
         Map<String, Object> tokenJson = new HashMap<>();
-        String refreshToken = RandomStringUtils.randomAlphabetic(20);
+        String refreshToken = RandomStringGenerator.generateRandomString(20);
         validRefreshTokens.add(refreshToken);
         tokenJson.put("access_token", token);
         tokenJson.put("refresh_token", refreshToken);
