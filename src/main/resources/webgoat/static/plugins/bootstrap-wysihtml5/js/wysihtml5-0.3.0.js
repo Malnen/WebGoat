@@ -3395,7 +3395,7 @@ wysihtml5.browser = (function() {
       isOpera     = userAgent.indexOf("Opera/")       !== -1;
 
   function iosVersion(userAgent) {
-      var regex = /(?:ipad|iphone|ipod)(?=.*\s+os\s+(\d+))/i;
+      var regex = /(?:ipad|iphone|ipod)(?=\s+os\s+(\d+))/i;
       var match = userAgent.match(regex);
       // Check if match is found and return iOS version
       return match ? parseInt(match[1]) : 0;

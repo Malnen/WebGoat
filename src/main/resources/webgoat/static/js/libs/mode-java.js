@@ -583,7 +583,7 @@ ace.define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/
 
     (function () {
 
-        this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*\/\*/m;
+        this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$/;
         this.foldingStopMarker = /^[^\[\{\(]*([}\]\)])|^\s*\*\/$/;
         this.singleLineBlockCommentRe = /^\s*\/\*.*\*\/\s*$/;
         this.tripleStarBlockCommentRe = /^\s*\/\*\*\*.*\*\/\s*$/;
@@ -869,7 +869,7 @@ ace.define("ace/mode/java_highlight_rules", ["require", "exports", "module", "ac
                     regex: /0(?:[xX][0-9a-fA-F][0-9a-fA-F_]*|[bB][01][01_]*)[LlSsDdFfYy]?\b/
                 }, {
                     token: "constant.numeric", // float
-                    regex: /[+-]?\d[\d_]*(?:\.\d[\d_]*)?(?:[eE][+-]?\d+)?[LlSsDdFfYy]?\b/
+                    regex: /[+-]?\d[\d_]*(?:\.\d+)?(?:[eE][+-]?\d+)?[LlSsDdFfYy]?\b/
                 }, {
                     token: "constant.language.boolean",
                     regex: "(?:true|false)\\b"
