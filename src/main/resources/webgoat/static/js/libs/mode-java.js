@@ -869,7 +869,7 @@ ace.define("ace/mode/java_highlight_rules", ["require", "exports", "module", "ac
                     regex: /0(?:[xX][0-9a-fA-F][0-9a-fA-F_]*|[bB][01][01_]*)[LlSsDdFfYy]?\b/
                 }, {
                     token: "constant.numeric", // float
-                    regex: /[+-]?\d[\d_]*(?:\.\d+)?(?:[eE][+-]?\d+)?[LlSsDdFfYy]?\b/
+                    regex: /[-+]?(\d+(\.\d+)?([eE][-+]?\d+)?|\d{1,3}(?:_\d{3})+)(?:[eE][-+]?\d+)?[L]? /
                 }, {
                     token: "constant.language.boolean",
                     regex: "(?:true|false)\\b"
