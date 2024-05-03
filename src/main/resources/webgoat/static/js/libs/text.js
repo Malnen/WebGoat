@@ -12,15 +12,15 @@ define(['module'], function (module) {
     'use strict';
 
     var text, fs, Cc, Ci, xpcIsWindows,
-        progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
-        xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
-        bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
-        hasLocation = typeof location !== 'undefined' && location.href,
-        defaultProtocol = hasLocation && location.protocol && location.protocol.replace(/\:/, ''),
-        defaultHostName = hasLocation && location.hostname,
-        defaultPort = hasLocation && (location.port || undefined),
-        buildMap = {},
-        masterConfig = (module.config && module.config()) || {};
+            progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
+            xmlRegExp = /^\s*<\?xml\s+version=['"](\d+)\.(\d+)['"]\s*\?>/im,
+            bodyRegExp = /<body[^>]*>([\s\S]+?)<\/body>/im,
+            hasLocation = typeof location !== 'undefined' && location.href,
+            defaultProtocol = hasLocation && location.protocol && location.protocol.replace(/\:/, ''),
+            defaultHostName = hasLocation && location.hostname,
+            defaultPort = hasLocation && (location.port || undefined),
+            buildMap = {},
+            masterConfig = (module.config && module.config()) || {};
 
     text = {
         version: '2.0.14',
@@ -43,13 +43,13 @@ define(['module'], function (module) {
 
         jsEscape: function (content) {
             return content.replace(/(['\\])/g, '\\$1')
-                .replace(/[\f]/g, "\\f")
-                .replace(/[\b]/g, "\\b")
-                .replace(/[\n]/g, "\\n")
-                .replace(/[\t]/g, "\\t")
-                .replace(/[\r]/g, "\\r")
-                .replace(/[\u2028]/g, "\\u2028")
-                .replace(/[\u2029]/g, "\\u2029");
+                    .replace(/[\f]/g, "\\f")
+                    .replace(/[\b]/g, "\\b")
+                    .replace(/[\n]/g, "\\n")
+                    .replace(/[\t]/g, "\\t")
+                    .replace(/[\r]/g, "\\r")
+                    .replace(/[\u2028]/g, "\\u2028")
+                    .replace(/[\u2029]/g, "\\u2029");
         },
 
         createXhr: masterConfig.createXhr || function () {
@@ -62,7 +62,8 @@ define(['module'], function (module) {
                     progId = progIds[i];
                     try {
                         xhr = new ActiveXObject(progId);
-                    } catch (e) {}
+                    } catch (e) {
+                    }
 
                     if (xhr) {
                         progIds = [progId];  // so faster next time
@@ -84,10 +85,10 @@ define(['module'], function (module) {
          */
         parseName: function (name) {
             var modName, ext, temp,
-                strip = false,
-                index = name.lastIndexOf("."),
-                isRelative = name.indexOf('./') === 0 ||
-                             name.indexOf('../') === 0;
+                    strip = false,
+                    index = name.lastIndexOf("."),
+                    isRelative = name.indexOf('./') === 0 ||
+                            name.indexOf('../') === 0;
 
             if (index !== -1 && (!isRelative || index > 1)) {
                 modName = name.substring(0, index);
@@ -128,7 +129,7 @@ define(['module'], function (module) {
          */
         useXhr: function (url, protocol, hostname, port) {
             var uProtocol, uHostName, uPort,
-                match = text.xdRegExp.exec(url);
+                    match = text.xdRegExp.exec(url);
             if (!match) {
                 return true;
             }
@@ -140,8 +141,8 @@ define(['module'], function (module) {
             uHostName = uHostName[0];
 
             return (!uProtocol || uProtocol === protocol) &&
-                   (!uHostName || uHostName.toLowerCase() === hostname.toLowerCase()) &&
-                   ((!uPort && !uHostName) || uPort === port);
+                    (!uHostName || uHostName.toLowerCase() === hostname.toLowerCase()) &&
+                    ((!uPort && !uHostName) || uPort === port);
         },
 
         finishLoad: function (name, strip, content, onLoad) {
@@ -170,11 +171,11 @@ define(['module'], function (module) {
             masterConfig.isBuild = config && config.isBuild;
 
             var parsed = text.parseName(name),
-                nonStripName = parsed.moduleName +
-                    (parsed.ext ? '.' + parsed.ext : ''),
-                url = req.toUrl(nonStripName),
-                useXhr = (masterConfig.useXhr) ||
-                         text.useXhr;
+                    nonStripName = parsed.moduleName +
+                            (parsed.ext ? '.' + parsed.ext : ''),
+                    url = req.toUrl(nonStripName),
+                    useXhr = (masterConfig.useXhr) ||
+                            text.useXhr;
 
             // Do not load if it is an empty: url
             if (url.indexOf('empty:') === 0) {
@@ -198,7 +199,7 @@ define(['module'], function (module) {
                 //!strip part to avoid file system issues.
                 req([nonStripName], function (content) {
                     text.finishLoad(parsed.moduleName + '.' + parsed.ext,
-                                    parsed.strip, content, onLoad);
+                            parsed.strip, content, onLoad);
                 });
             }
         },
@@ -207,19 +208,19 @@ define(['module'], function (module) {
             if (buildMap.hasOwnProperty(moduleName)) {
                 var content = text.jsEscape(buildMap[moduleName]);
                 write.asModule(pluginName + "!" + moduleName,
-                               "define(function () { return '" +
-                                   content +
-                               "';});\n");
+                        "define(function () { return '" +
+                        content +
+                        "';});\n");
             }
         },
 
         writeFile: function (pluginName, moduleName, req, write, config) {
             var parsed = text.parseName(moduleName),
-                extPart = parsed.ext ? '.' + parsed.ext : '',
-                nonStripName = parsed.moduleName + extPart,
-                //Use a '.js' file name so that it indicates it is a
-                //script that can be loaded across domains.
-                fileName = req.toUrl(parsed.moduleName + extPart) + '.js';
+                    extPart = parsed.ext ? '.' + parsed.ext : '',
+                    nonStripName = parsed.moduleName + extPart,
+                    //Use a '.js' file name so that it indicates it is a
+                    //script that can be loaded across domains.
+                    fileName = req.toUrl(parsed.moduleName + extPart) + '.js';
 
             //Leverage own load() method to load plugin value, but only
             //write out values that do not have the strip argument,
@@ -312,11 +313,11 @@ define(['module'], function (module) {
         //Why Java, why is this so awkward?
         text.get = function (url, callback) {
             var stringBuilder, line,
-                encoding = "utf-8",
-                file = new java.io.File(url),
-                lineSeparator = java.lang.System.getProperty("line.separator"),
-                input = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), encoding)),
-                content = '';
+                    encoding = "utf-8",
+                    file = new java.io.File(url),
+                    lineSeparator = java.lang.System.getProperty("line.separator"),
+                    input = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), encoding)),
+                    content = '';
             try {
                 stringBuilder = new java.lang.StringBuilder();
                 line = input.readLine();
@@ -359,7 +360,7 @@ define(['module'], function (module) {
 
         text.get = function (url, callback) {
             var inStream, convertStream, fileObj,
-                readData = {};
+                    readData = {};
 
             if (xpcIsWindows) {
                 url = url.replace(/\//g, '\\');
@@ -370,13 +371,13 @@ define(['module'], function (module) {
             //XPCOM, you so crazy
             try {
                 inStream = Cc['@mozilla.org/network/file-input-stream;1']
-                           .createInstance(Ci.nsIFileInputStream);
+                        .createInstance(Ci.nsIFileInputStream);
                 inStream.init(fileObj, 1, 0, false);
 
                 convertStream = Cc['@mozilla.org/intl/converter-input-stream;1']
-                                .createInstance(Ci.nsIConverterInputStream);
+                        .createInstance(Ci.nsIConverterInputStream);
                 convertStream.init(inStream, "utf-8", inStream.available(),
-                Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+                        Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
 
                 convertStream.readString(inStream.available(), readData);
                 convertStream.close();

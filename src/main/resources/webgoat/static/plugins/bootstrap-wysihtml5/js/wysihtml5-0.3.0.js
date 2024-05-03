@@ -3395,7 +3395,10 @@ wysihtml5.browser = (function() {
       isOpera     = userAgent.indexOf("Opera/")       !== -1;
 
   function iosVersion(userAgent) {
-    return ((/ipad|iphone|ipod/.test(userAgent) && userAgent.match(/ os (\d+).+? like mac os x/)) || [, 0])[1];
+      var regex = /(?:ipad|iphone|ipod).*?os (\d+)[\._]?\d*[\._]?\d*\s*like mac os x/i;
+      var match = userAgent.match(regex);
+      // Check if match is found and return iOS version
+      return match ? parseInt(match[1]) : 0;
   }
 
   return {
@@ -3878,7 +3881,7 @@ wysihtml5.browser = (function() {
   };
 };(function() {
   var WHITE_SPACE_START = /^\s+/,
-      WHITE_SPACE_END   = /\s+$/;
+          WHITE_SPACE_END = /\s*$/;
   wysihtml5.lang.string = function(str) {
     str = String(str);
     return {

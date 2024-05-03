@@ -65,7 +65,7 @@ public class SqlInjectionLesson6a extends AssignmentEndpoint {
       boolean usedUnion = true;
       query = "SELECT * FROM user_data WHERE last_name = '" + accountName + "'";
       // Check if Union is used
-      if (!accountName.matches("(?i)(^[^-/*;)]*)(\\s*)UNION(.*$)")) {
+      if (!accountName.matches("(?i)^[^-/*;\\s]*\\s+UNION\\s+.*$")) {
         usedUnion = false;
       }
       try (Statement statement =

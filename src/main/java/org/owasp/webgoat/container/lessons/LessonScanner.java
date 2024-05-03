@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LessonScanner {
 
-  private static final Pattern lessonPattern = Pattern.compile("^.*/lessons/([^/]*)/.*$");
+  private static final Pattern lessonPattern = Pattern.compile("^/[^/]*/lessons/([^/]*)/[^/]*$");
 
   @Getter private final Set<String> lessons = new HashSet<>();
 
