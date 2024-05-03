@@ -583,7 +583,7 @@ ace.define("ace/mode/folding/cstyle", ["require", "exports", "module", "ace/lib/
 
     (function () {
 
-        this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*\/\*/;
+        this.foldingStartMarker = /([\{\[\(])[^\}\]\)]*$|^\s*\/\*/m;
         this.foldingStopMarker = /^[^\[\{\(]*([}\]\)])|^\s*\*\/$/;
         this.singleLineBlockCommentRe = /^\s*\/\*.*\*\/\s*$/;
         this.tripleStarBlockCommentRe = /^\s*\/\*\*\*.*\*\/\s*$/;
