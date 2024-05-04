@@ -134,10 +134,11 @@ public class FileServer {
 
         // Check if a file upload success indicator file exists
         File changeIndicatorFile = new File(destinationDir, username + "_changed");
-        if (changeIndicatorFile.exists()) {
-            modelAndView.addObject("uploadSuccess", request.getParameter("uploadSuccess"));
-            Path changeIndicatorpath = Paths.get(changeIndicatorFile.toPath().normalize().toAbsolutePath().toString()).resolve(username).normalize();
-            changeIndicatorpath.toFile().delete(); // Remove the indicator after checking
+        try {
+            Files.delete(changeIndicatorFile.toPath()); // Securely remove the indicator file
+        } catch (IOException e) {
+            // Handle the case where the file could not be deleted
+            System.err.println("Failed to delete change indicator file: " + e.getMessage());
         }
 
         // Define a record to store file details
