@@ -63,21 +63,33 @@ public class ProfileZipSlip extends ProfileUploadBase {
 
     @SneakyThrows
     private AttackResult processZipUpload(MultipartFile file) {
-        var tmpZipDirectory = createSecureTempDirectory(getWebSession().getUserName());
+        Path tmpZipDirectory = createSecureTempDirectory(getWebSession().getUserName());
         cleanupAndCreateDirectoryForUser();
         var currentImage = getProfilePictureAsBase64();
 
         try {
-            var uploadedZipFile = tmpZipDirectory.resolve(file.getOriginalFilename());
+            Path uploadedZipFile = tmpZipDirectory.resolve(file.getOriginalFilename());
             FileCopyUtils.copy(file.getBytes(), uploadedZipFile.toFile());
 
             ZipFile zip = new ZipFile(uploadedZipFile.toFile());
             Enumeration<? extends ZipEntry> entries = zip.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
-                File f = new File(tmpZipDirectory.toFile(), e.getName());
-                InputStream is = zip.getInputStream(e);
-                Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Path filePath = tmpZipDirectory.resolve(e.getName()).normalize();
+                if (!filePath.startsWith(tmpZipDirectory)) {
+                    throw new SecurityException("Entry is outside of the target dir: " + e.getName());
+                }
+
+                if (!e.isDirectory()) {
+                    Path parentDir = filePath.getParent();
+                    if (parentDir != null) {
+                        Files.createDirectories(parentDir);
+                    }
+
+                    try (InputStream is = zip.getInputStream(e)) {
+                        Files.copy(is, filePath, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }
             }
 
             return isSolved(currentImage, getProfilePictureAsBase64());
