@@ -135,6 +135,7 @@ public class JWTVotesEndpoint extends AssignmentEndpoint {
                 cookie.setSecure(true);
             }
 
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
             response.setStatus(HttpStatus.OK.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -143,7 +144,8 @@ public class JWTVotesEndpoint extends AssignmentEndpoint {
             if (request.isSecure()) {
                 cookie.setSecure(true);
             }
-            
+
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);

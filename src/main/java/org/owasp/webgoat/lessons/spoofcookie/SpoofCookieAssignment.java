@@ -84,6 +84,7 @@ public class SpoofCookieAssignment extends AssignmentEndpoint {
             cookie.setSecure(true);
         }
 
+        cookie.setSecure(true);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
