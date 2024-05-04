@@ -23,8 +23,10 @@
     <div class="adoc-content" th:replace="~{doc:lessons/sqlinjection/documentation/SqlInjection_jdbc_completion.adoc}"></div>
     <div class="attack-container">
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
-        <form class="attack-form" accept-charset="UNKNOWN" method="POST" name="form" action="SqlInjectionMitigations/attack10a">
-            <div>
+        <form class="attack-form" accept-charset="UNKNOWN" method="POST" name="form" th:action="@{SqlInjectionMitigations/attack10a}">
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>  <div>
                 <p>Connection conn = DriverManager.<input type="text" name="field1" id="field1" />(DBURL, DBUSER, DBPW);</p>
                 <p><input type="text" name="field2" id="field2" /> = conn.<input type="text" name="field3" id="field3" />("SELECT status FROM users WHERE name=<input type="text" name="field4" id="field4" /> AND mail=<input type="text" name="field5" id="field5" />");</p>
                 <p><input type="text" name="field6" id="field6" />;</p>
@@ -42,8 +44,10 @@
 <div class="lesson-page-wrapper">
     <div class="adoc-content" th:replace="~{doc:lessons/sqlinjection/documentation/SqlInjection_jdbc_newcode.adoc}"></div>
     <div class="attack-container" style="border: none !important; height: 100%; min-height: 300px;">
-        <form id="codesubmit" style="height: 100%; min-height: 300px;" class="attack-form" accept-charset="UNKNOWN" method="POST" name="form" action="SqlInjectionMitigations/attack10b">
-            <div>
+        <form id="codesubmit" style="height: 100%; min-height: 300px;" class="attack-form" accept-charset="UNKNOWN" method="POST" name="form" th:action="@{SqlInjectionMitigations/attack10b}">
+            <input type="hidden"
+                   name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>  <div>
                 <div id="editor" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; height: 300px;" name="editor"></div>
                 <script th:src="@{/js/libs/ace.js}" type="text/javascript" charset="utf-8"></script>
                 <script th:src="@{/lesson_js/assignment10b.js}" type="text/javascript" charset="utf-8"></script>
@@ -72,8 +76,10 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="SqlOnlyInputValidation/attack"
-              enctype="application/json;charset=UTF-8">
+              th:action="@{SqlOnlyInputValidation/attack}"
+              enctype="application/json;charset=UTF-8"><input type="hidden"
+                                                              name="${_csrf.parameterName}"
+                                                              value="${_csrf.token}"/>
             <table>
                 <tr>
                     <td>Name:</td>
@@ -95,8 +101,10 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="SqlOnlyInputValidationOnKeywords/attack"
-              enctype="application/json;charset=UTF-8">
+              th:action="@{SqlOnlyInputValidationOnKeywords/attack}"
+              enctype="application/json;charset=UTF-8"><input type="hidden"
+                                                              name="${_csrf.parameterName}"
+                                                              value="${_csrf.token}"/>
             <table>
                 <tr>
                     <td>Name:</td>
@@ -124,7 +132,9 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="SqlInjectionMitigations/attack12a">
+              th:action="@{SqlInjectionMitigations/attack12a}"><input type="hidden"
+                                                                name="${_csrf.parameterName}"
+                                                                value="${_csrf.token}"/>
             <div class="container-fluid">
                 <div class="row">
                     <div class="panel panel-primary">
@@ -173,7 +183,7 @@
                 <br/>
             </div>
         </form>
-        <form class="attack-form" method="POST" name="form" action="SqlInjectionMitigations/attack12a">
+        <form class="attack-form" method="POST" name="form" th:action="@{SqlInjectionMitigations/attack12a}">
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">IP address webgoat-prd server:</div>

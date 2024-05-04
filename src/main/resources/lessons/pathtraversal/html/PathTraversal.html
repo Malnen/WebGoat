@@ -1,8 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
-
-<script th:src="@{/lesson_js/path_traversal.js}" language="JavaScript"></script>
-<link rel="stylesheet" type="text/css" th:href="@{/lesson_css/path_traversal.css}"/>
-
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script th:src="@{/lesson_js/path_traversal.js}" language="JavaScript"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/lesson_css/path_traversal.css}"/>
+</head>
 
 <div class="lesson-page-wrapper">
     <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_intro.adoc}"></div>
@@ -22,7 +24,10 @@
                   informationalCallback="profileUploadCallback"
                   prepareData="profileUpload"
                   enctype="multipart/form-data"
-                  action="PathTraversal/profile-upload">
+                  th:action="@{'PathTraversal/profile-upload'}"><input type="hidden"
+                                                                       name="${_csrf.parameterName}"
+                                                                       id="_csrf"
+                                                                       value="${_csrf.token}"/>
                 <div class="preview text-center">
                     <img class="preview-img" th:src="@{/images/account.png}" alt="Preview Image" width="200"
                          height="200" id="preview"/>
@@ -63,7 +68,8 @@
 </div>
 
 <div class="lesson-page-wrapper">
-    <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_upload_fix.adoc}"></div>
+    <div class="adoc-content"
+         th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_upload_fix.adoc}"></div>
     <div class="attack-container">
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <div class="upload-container">
@@ -76,7 +82,10 @@
                   informationalCallback="profileUploadCallbackFix"
                   prepareData="profileUploadFix"
                   enctype="multipart/form-data"
-                  action="PathTraversal/profile-upload-fix">
+                  th:action="@{'PathTraversal/profile-upload-fix'}"><input type="hidden"
+                                                                           name="${_csrf.parameterName}"
+                                                                       id="_csrfFix"
+                                                                           value="${_csrf.token}"/>
                 <div class="preview text-center">
                     <img class="preview-img" th:src="@{/images/account.png}" alt="Preview Image" width="200"
                          height="200" id="previewFix"/>
@@ -118,7 +127,8 @@
 
 
 <div class="lesson-page-wrapper">
-    <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_upload_remove_user_input.adoc}"></div>
+    <div class="adoc-content"
+         th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_upload_remove_user_input.adoc}"></div>
     <div class="attack-container">
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <div class="upload-container">
@@ -131,7 +141,10 @@
                   informationalCallback="profileUploadCallbackRemoveUserInput"
                   prepareData="profileUploadRemoveUserInput"
                   enctype="multipart/form-data"
-                  action="PathTraversal/profile-upload-remove-user-input">
+                  th:action="@{'PathTraversal/profile-upload-remove-user-input'}"><input type="hidden"
+                                                                                         name="${_csrf.parameterName}"
+                                                                       id="_csrfRemoveUserInput"
+                                                                                         value="${_csrf.token}"/>
                 <div class="preview text-center">
                     <img class="preview-img" th:src="@{/images/account.png}" alt="Preview Image" width="200"
                          height="200" id="previewRemoveUserInput"/>
@@ -174,7 +187,8 @@
 </div>
 
 <div class="lesson-page-wrapper">
-    <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_retrieval.adoc}"></div>
+    <div class="adoc-content"
+         th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_retrieval.adoc}"></div>
     <div class="attack-container">
 
         <div class="container-fluid">
@@ -189,7 +203,9 @@
 
 
             <br/>
-            <form class="attack-form" method="POST" name="form" action="PathTraversal/random">
+            <form class="attack-form" method="POST" name="form" th:action="@{PathTraversal/random}"><input type="hidden"
+                                                                                                           name="${_csrf.parameterName}"
+                                                                                                           value="${_csrf.token}"/>
                 <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
                 <div class="form-group">
                     <div class="input-group">
@@ -216,7 +232,8 @@
 </div>
 
 <div class="lesson-page-wrapper">
-    <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_zip_slip_assignment.adoc}"></div>
+    <div class="adoc-content"
+         th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_zip_slip_assignment.adoc}"></div>
     <div class="attack-container">
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <div class="upload-container">
@@ -227,7 +244,10 @@
 
                   prepareData="profileZipSlip"
                   enctype="multipart/form-data"
-                  action="PathTraversal/zip-slip">
+                  th:action="@{PathTraversal/zip-slip}"><input type="hidden"
+                                                               name="${_csrf.parameterName}"
+                                                                       id="_csrfZipSlip"
+                                                               value="${_csrf.token}"/>
                 <div class="preview text-center">
                     <img class="preview-img" th:src="@{/images/account.png}" alt="Preview Image" width="200"
                          height="200" id="previewZipSlip"/>
@@ -271,7 +291,8 @@
 
 <div class="lesson-page-wrapper">
     <div class="lesson-page-solution">
-        <div class="adoc-content" th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_zip_slip_solution.adoc}"></div>
+        <div class="adoc-content"
+             th:replace="~{doc:lessons/pathtraversal/documentation/PathTraversal_zip_slip_solution.adoc}"></div>
     </div>
 </div>
 

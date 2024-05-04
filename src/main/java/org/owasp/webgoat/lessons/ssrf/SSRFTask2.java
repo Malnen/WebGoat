@@ -62,7 +62,7 @@ public class SSRFTask2 extends AssignmentEndpoint {
       }
       return success(this).feedback("ssrf.success").output(html).build();
     }
-    var html = "<img class=\"image\" alt=\"image post\" src=\"images/cat.jpg\">";
+    var html = "<img class=\"image\" alt=\"image post\" th:src=\"@{images/cat.jpg}\">";
     return getFailedResult(html);
   }
 

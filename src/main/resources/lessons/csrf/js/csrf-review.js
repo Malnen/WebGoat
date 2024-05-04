@@ -17,7 +17,7 @@ $(document).ready(function () {
 
     var html = '<li class="comment">' +
         '<div class="pull-left">' +
-        '<img class="avatar" src="images/avatar1.png" alt="avatar"/>' +
+        '<img class="avatar" th:src="@{images/avatar1.png}" alt="avatar"/>' +
         '</div>' +
         '<div class="comment-body">' +
         '<div class="comment-heading">' +

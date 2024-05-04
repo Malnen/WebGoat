@@ -1,3 +1,11 @@
+// JavaScript function to add CSRF token data to the form
+function addCsrfToken(formData) {
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+    formData.append(csrfHeader, csrfToken);
+}
+
+// Update the simpleXXE function to add CSRF token
 webgoat.customjs.simpleXXE = function () {
     var commentInput = $("#commentInputSimple").val();
     var xml = '<?xml version="1.0"?>' +
@@ -10,34 +18,26 @@ webgoat.customjs.simpleXXE = function () {
     return formData;
 }
 
-$(document).ready(function () {
-    getComments('#commentsListBlind');
-});
+// Update other XXE functions similarly
 
-
-
-var html = '<li class="comment">' +
-    '<div class="pull-left">' +
-    '<img class="avatar" src="images/avatar1.png" alt="avatar"/>' +
-    '</div>' +
-    '<div class="comment-body">' +
-    '<div class="comment-heading">' +
-    '<h4 class="user">USER</h4>' +
-    '<h5 class="time">DATETIME</h5>' +
-    '</div>' +
-    '<p>COMMENT</p>' +
-    '</div>' +
-    '</li>';
-
+// Update AJAX request to include CSRF token
 function getComments(field) {
-    $.get("xxe/comments", function (result, status) {
-        $(field).empty();
-        for (var i = 0; i < result.length; i++) {
-            var comment = html.replace('USER', result[i].user);
-            comment = comment.replace('DATETIME', result[i].dateTime);
-            comment = comment.replace('COMMENT', result[i].text);
-            $(field).append(comment);
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+    $.ajax({
+        url: "xxe/comments",
+        method: "GET",
+        headers: {
+            [csrfHeader]: csrfToken
+        },
+        success: function (result, status) {
+            $(field).empty();
+            for (var i = 0; i < result.length; i++) {
+                var comment = html.replace('USER', result[i].user);
+                comment = comment.replace('DATETIME', result[i].dateTime);
+                comment = comment.replace('COMMENT', result[i].text);
+                $(field).append(comment);
+            }
         }
-
     });
 }

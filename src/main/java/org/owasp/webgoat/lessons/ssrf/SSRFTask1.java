@@ -49,16 +49,16 @@ public class SSRFTask1 extends AssignmentEndpoint {
 
       if (url.matches("images/tom\\.png")) {
         html.append(
-            "<img class=\"image\" alt=\"Tom\" src=\"images/tom.png\" width=\"25%\""
+            "<img class=\"image\" alt=\"Tom\" th:src=\"@{images/tom.png}\" width=\"25%\""
                 + " height=\"25%\">");
         return failed(this).feedback("ssrf.tom").output(html.toString()).build();
       } else if (url.matches("images/jerry\\.png")) {
         html.append(
-            "<img class=\"image\" alt=\"Jerry\" src=\"images/jerry.png\" width=\"25%\""
+            "<img class=\"image\" alt=\"Jerry\" th:src=\"@{images/jerry.png}\" width=\"25%\""
                 + " height=\"25%\">");
         return success(this).feedback("ssrf.success").output(html.toString()).build();
       } else {
-        html.append("<img class=\"image\" alt=\"Silly Cat\" src=\"images/cat.jpg\">");
+        html.append("<img class=\"image\" alt=\"Silly Cat\" th:src=\"@{images/cat.jpg}\">");
         return failed(this).feedback("ssrf.failure").output(html.toString()).build();
       }
     } catch (Exception e) {

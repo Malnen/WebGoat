@@ -18,7 +18,9 @@
         <div class="container-fluid">
             <form class="attack-form" accept-charset="UNKNOWN" name="fieldRestrictions"
                   method="POST"
-                  action="BypassRestrictions/FieldRestrictions">
+                  th:action="@{BypassRestrictions/FieldRestrictions}"><input type="hidden"
+                                                                       name="${_csrf.parameterName}"
+                                                                       value="${_csrf.token}"/>
 
                 <div class="bypass-input-container"><b>Select field with two possible value</b>
                     <div class="input-group">
@@ -66,8 +68,10 @@
         <form class="attack-form" accept-charset="UNKNOWN" name="frontendValidation"
               id="frontendValidation"
               method="POST"
-              action="BypassRestrictions/frontendValidation"
-              onsubmit="return validate()">
+              th:action="@{BypassRestrictions/frontendValidation}"
+              onsubmit="return validate()"><input type="hidden"
+                                                  name="${_csrf.parameterName}"
+                                                  value="${_csrf.token}"/>
             <div>
                 <strong>Field 1:</strong> exactly three lowercase characters(^[a-z]{3}$)
             </div>

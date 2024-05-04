@@ -64,7 +64,7 @@ public class Assignment7 extends AssignmentEndpoint {
             return ResponseEntity.accepted()
                     .body(
                             "<h1>Success!!</h1>"
-                                    + "<img src='/WebGoat/images/hi-five-cat.jpg'>"
+                                    + "<img th:src=\"@{/WebGoat/images/hi-five-cat.jpg}'>"
                                     + "<br/><br/>Here is your flag: "
                                     + flags.getFlag(7));
         }

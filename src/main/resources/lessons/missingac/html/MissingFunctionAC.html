@@ -52,7 +52,9 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="access-control/hidden-menu">
+              th:action="@{access-control/hidden-menu}"><input type="hidden"
+                                                         name="${_csrf.parameterName}"
+                                                         value="${_csrf.token}"/>
 
             <p>Hidden item 1 <input name="hiddenMenu1" value="" type="TEXT"/></p>
             <p>Hidden item 2 <input name="hiddenMenu2" value="" type="TEXT"/></p>
@@ -75,7 +77,9 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="access-control/user-hash">
+              th:action="@{access-control/user-hash}"><input type="hidden"
+                                                       name="${_csrf.parameterName}"
+                                                       value="${_csrf.token}"/>
 
             <p>Your Hash: <input name="userHash" value="" type="TEXT"/></p>
             <br/>
@@ -97,7 +101,9 @@
         <div class="assignment-success"><i class="fa fa-2 fa-check hidden" aria-hidden="true"></i></div>
         <form class="attack-form" accept-charset="UNKNOWN"
               method="POST" name="form"
-              action="access-control/user-hash-fix">
+              th:action="@{access-control/user-hash-fix}"><input type="hidden"
+                                                           name="${_csrf.parameterName}"
+                                                           value="${_csrf.token}"/>
 
             <p>Your Hash: <input name="userHash" value="" type="TEXT"/></p>
             <br/>

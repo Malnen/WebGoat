@@ -1,5 +1,4 @@
 webgoat.customjs.profileUpload = function () {
-
     var picture = document.getElementById("uploadedFile").files[0];
     var formData = new FormData();
     formData.append("uploadedFile", picture);
@@ -35,7 +34,6 @@ webgoat.customjs.profileUploadCallbackFix = function () {
     });
 }
 
-
 webgoat.customjs.profileUploadRemoveUserInput = function () {
     var picture = document.getElementById("uploadedFileRemoveUserInput").files[0];
     var formData = new FormData();
@@ -53,7 +51,6 @@ webgoat.customjs.profileUploadCallbackRemoveUserInput = function () {
         document.getElementById("previewRemoveUserInput").src = "data:image/png;base64," + result;
     });
 }
-
 
 webgoat.customjs.profileUploadCallbackRetrieval = function () {
     $.get("PathTraversal/profile-picture", function (result, status) {
@@ -78,3 +75,4 @@ webgoat.customjs.profileZipSlip = function () {
     formData.append("_csrf", csrfToken);
     return formData;
 }
+

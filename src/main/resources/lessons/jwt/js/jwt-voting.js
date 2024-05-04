@@ -15,7 +15,7 @@ function loginVotes(user) {
 var html = '<a href="#" class="list-group-item ACTIVE">' +
     '<div class="media col-md-3">' +
     '<figure> ' +
-    '<img class="media-object img-rounded" src="images/IMAGE_SMALL" alt="placehold.it/350x250"/>' +
+    '<img class="media-object img-rounded" th:src="@{images/IMAGE_SMALL}" alt="placehold.it/350x250"/>' +
     '</figure>' +
     '</div> ' +
     '<div class="col-md-6">' +

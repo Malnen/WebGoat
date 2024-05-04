@@ -23,7 +23,9 @@
             <form class="attack-form" accept-charset="UNKNOWN" id="verify-account-form"
                   method="POST" name="form"
                   successCallback="onBypassResponse"
-                  action="auth-bypass/verify-account">
+                  th:action="@{auth-bypass/verify-account}"><input type="hidden"
+                                                             name="${_csrf.parameterName}"
+                                                             value="${_csrf.token}"/>
                 <p>Verify Your Account by answering the questions below:</p>
 
                 <p>What is the name of your favorite teacher?</p>
@@ -43,8 +45,10 @@
             <form class="attack-form" accept-charset="UNKNOWN" id="change-password-form"
                   method="POST" name="form"
                   successCallback="onBypassResponse"
-                  action="auth-bypass/verify-account"
-                  style="display:none"><!-- start off hidden -->
+                  th:action="@{auth-bypass/verify-account}"
+                  style="display:none"><!-- start off hidden --><input type="hidden"
+                                                                       name="${_csrf.parameterName}"
+                                                                       value="${_csrf.token}"/>
                 <p>Please provide a new password for your account</p>
 
                 <p>Password:</p>
