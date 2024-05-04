@@ -48,6 +48,7 @@ import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
 import org.owasp.webgoat.lessons.jwt.votes.Views;
 import org.owasp.webgoat.lessons.jwt.votes.Vote;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,11 +72,16 @@ import org.springframework.web.bind.annotation.RestController;
 })
 public class JWTVotesEndpoint extends AssignmentEndpoint {
 
-    public static final String JWT_PASSWORD = TextCodec.BASE64.encode("victory");
+    @Value("victory.password")
+    public static String PASSWORD;
+    public static String JWT_PASSWORD;
     private static String validUsers = "TomJerrySylvester";
-
     private static int totalVotes = 38929;
     private Map<String, Vote> votes = new HashMap<>();
+
+    public JWTVotesEndpoint() {
+        JWT_PASSWORD = TextCodec.BASE64.encode(PASSWORD);
+    }
 
     @PostConstruct
     public void initVotes() {
