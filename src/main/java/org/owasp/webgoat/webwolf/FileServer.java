@@ -134,12 +134,9 @@ public class FileServer {
 
         // Check if a file upload success indicator file exists
         File changeIndicatorFile = new File(destinationDir, username + "_changed");
-        try {
-            Files.delete(changeIndicatorFile.toPath()); // Securely remove the indicator file
-        } catch (IOException e) {
-            // Handle the case where the file could not be deleted
-            System.err.println("Failed to delete change indicator file: " + e.getMessage());
-        }
+        Path changeIndicatorPath = Paths.get(changeIndicatorFile.getAbsolutePath()).normalize();
+        changeIndicatorPath.toFile().delete(); // Securely remove the indicator file
+
 
         // Define a record to store file details
         record UploadedFile(String name, String size, String link, String creationTime) {
