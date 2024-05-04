@@ -95,9 +95,6 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 .csrf()
-                .ignoringRequestMatchers("/js/**", "/css/**", "/images/**",
-                        "/lesson_css/**",
-                        "/lesson_js/**")
                 .and()
                 .headers()
                 .and()
