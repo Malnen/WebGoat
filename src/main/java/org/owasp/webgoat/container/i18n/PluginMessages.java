@@ -79,7 +79,31 @@ public class PluginMessages extends ReloadableResourceBundleMessageSource {
     return getMessage(code, args, language.getLocale());
   }
 
-  public String getMessage(String code, String defaultValue, Object... args) {
-    return super.getMessage(code, args, defaultValue, language.getLocale());
-  }
+    public String getMessage(String code, String defaultValue, Object... args) {
+        // Optionally sanitize the code or args if they come from user input
+        code = sanitizeCode(code);
+        Object[] sanitizedArgs = sanitizeArgs(args);
+
+        // Now fetch the message safely
+        return super.getMessage(code, sanitizedArgs, defaultValue, language.getLocale());
+    }
+
+    private String sanitizeCode(String code) {
+        // Implement code sanitization logic here
+        return code.replaceAll("[^\\w.-]", "");
+    }
+
+    private Object[] sanitizeArgs(Object[] args) {
+        // Implement argument sanitization logic here
+        if (args == null) return null;
+        Object[] sanitized = new Object[args.length];
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof String) {
+                sanitized[i] = ((String) args[i]).replaceAll("[^\\w\\s.-]", "");
+            } else {
+                sanitized[i] = args[i];  // Assume non-String args are safe, adjust if necessary
+            }
+        }
+        return sanitized;
+    }
 }

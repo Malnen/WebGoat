@@ -136,7 +136,8 @@ public class FileServer {
         File changeIndicatorFile = new File(destinationDir, username + "_changed");
         if (changeIndicatorFile.exists()) {
             modelAndView.addObject("uploadSuccess", request.getParameter("uploadSuccess"));
-            changeIndicatorFile.delete(); // Remove the indicator after checking
+            Path changeIndicatorpath = Paths.get(changeIndicatorFile.toPath().normalize().toAbsolutePath().toString()).resolve(username).normalize();
+            changeIndicatorpath.toFile().delete(); // Remove the indicator after checking
         }
 
         // Define a record to store file details
