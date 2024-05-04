@@ -38,6 +38,8 @@ import javax.tools.ToolProvider;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,6 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
       "SqlStringInjectionHint-mitigation-10b-5"
     })
 public class SqlInjectionLesson10b extends AssignmentEndpoint {
+    private static Logger logger = LoggerFactory.getLogger(SqlInjectionLesson10b.class);
 
   @PostMapping("/SqlInjectionMitigations/attack10b")
   @ResponseBody
@@ -127,7 +130,7 @@ public class SqlInjectionLesson10b extends AssignmentEndpoint {
     try {
       javaFileObject = new JavaObjectFromString("TestClass.java", javaFileContents.toString());
     } catch (Exception exception) {
-      exception.printStackTrace();
+        logger.error("An exception occurred!", exception);
     }
     return javaFileObject;
   }

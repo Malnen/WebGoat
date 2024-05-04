@@ -25,6 +25,8 @@ package org.owasp.webgoat.lessons.ssrf;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AssignmentHints({"ssrf.hint1", "ssrf.hint2"})
 public class SSRFTask1 extends AssignmentEndpoint {
+    private static Logger logger = LoggerFactory.getLogger(SSRFTask1.class);
 
   @PostMapping("/SSRF/task1")
   @ResponseBody
@@ -59,7 +62,7 @@ public class SSRFTask1 extends AssignmentEndpoint {
         return failed(this).feedback("ssrf.failure").output(html.toString()).build();
       }
     } catch (Exception e) {
-      e.printStackTrace();
+        logger.error("An exception occurred!", e);
       return failed(this).output(e.getMessage()).build();
     }
   }

@@ -26,6 +26,8 @@ import org.owasp.webgoat.container.LessonDataSource;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +47,7 @@ import java.sql.SQLException;
                 "SqlInjectionChallengeHint4"
         })
 public class SqlInjectionChallengeLogin extends AssignmentEndpoint {
+    private static Logger logger = LoggerFactory.getLogger(SqlInjectionChallengeLogin.class);
 
     private final LessonDataSource dataSource;
 
@@ -72,7 +75,7 @@ public class SqlInjectionChallengeLogin extends AssignmentEndpoint {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("An exception occurred!", e);
             return failed(this).feedback("sql-error").output(e.getMessage()).build();
         }
     }
