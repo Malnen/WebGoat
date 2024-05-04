@@ -68,9 +68,6 @@ public class JWTRefreshEndpoint extends AssignmentEndpoint {
     @Value("jwt2.password")
     private static String JWT2_PASSWORD;
 
-    @Value("jerry.password")
-    private static String JERRY_PASSWORD;
-
     private static final List<String> validRefreshTokens = new ArrayList<>();
 
     @PostMapping(

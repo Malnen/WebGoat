@@ -6,6 +6,8 @@ webgoat.customjs.profileUpload = function () {
     formData.append("fullName", $("#fullName").val());
     formData.append("email", $("#email").val());
     formData.append("password", $("#password").val());
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    formData.append("_csrf", csrfToken);
     return formData;
 }
 
@@ -22,6 +24,8 @@ webgoat.customjs.profileUploadFix = function () {
     formData.append("fullNameFix", $("#fullNameFix").val());
     formData.append("emailFix", $("#emailFix").val());
     formData.append("passwordFix", $("#passwordFix").val());
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    formData.append("_csrf", csrfToken);
     return formData;
 }
 
@@ -39,6 +43,8 @@ webgoat.customjs.profileUploadRemoveUserInput = function () {
     formData.append("fullName", $("#fullNameRemoveUserInput").val());
     formData.append("email", $("#emailRemoveUserInput").val());
     formData.append("password", $("#passwordRemoveUserInput").val());
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    formData.append("_csrf", csrfToken);
     return formData;
 }
 
@@ -68,5 +74,7 @@ webgoat.customjs.profileZipSlip = function () {
     formData.append("fullName", $("#fullNameZipSlip").val());
     formData.append("email", $("#emailZipSlip").val());
     formData.append("password", $("#passwordZipSlip").val());
+    var csrfToken = $('meta[name="_csrf"]').attr('content');
+    formData.append("_csrf", csrfToken);
     return formData;
 }

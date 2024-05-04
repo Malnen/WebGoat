@@ -1,52 +1,13 @@
 webgoat.customjs.simpleXXE = function () {
     var commentInput = $("#commentInputSimple").val();
     var xml = '<?xml version="1.0"?>' +
-        '<comment>' +
-        '  <text>' + commentInput + '</text>' +
-        '</comment>';
-    return xml;
-}
-
-webgoat.customjs.simpleXXECallback = function() {
-    $("#commentInputSimple").val('');
-    getComments('#commentsListSimple');
-}
-
-$(document).ready(function () {
-    getComments('#commentsListSimple');
-});
-
-//// Content-type
-
-webgoat.customjs.contentTypeXXE = function() {
-    var commentInput = $("#commentInputContentType").val();
-    return JSON.stringify({text: commentInput});
-}
-
-webgoat.customjs.contentTypeXXECallback = function() {
-    $("#commentInputContentType").val('');
-    getComments('#commentsListContentType');
-}
-
-$(document).ready(function () {
-    getComments('#commentsListContentType');
-});
-
-
-//// Blind
-
-webgoat.customjs.blindXXE = function() {
-    var commentInput = $("#commentInputBlind").val();
-    var xml = '<?xml version="1.0"?>' +
-        '<comment>' +
-        '  <text>' + commentInput + '</text>' +
-        '</comment>';
-    return xml;
-}
-
-webgoat.customjs.blindXXECallback = function() {
-    $("#commentInputBlind").val('');
-    getComments('#commentsListBlind');
+            '<comment>' +
+            '  <text>' + commentInput + '</text>' +
+            '</comment>';
+    var formData = new FormData();
+    formData.append('xml', xml);
+    addCsrfToken(formData); // Add CSRF token data
+    return formData;
 }
 
 $(document).ready(function () {

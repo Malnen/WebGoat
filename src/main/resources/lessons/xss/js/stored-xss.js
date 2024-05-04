@@ -1,11 +1,16 @@
 $(document).ready(function () {
     $("#postComment").on("click", function () {
         var commentInput = $("#commentInput").val();
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var headers = {};
+        headers[csrfHeader] = csrfToken;
         $.ajax({
             type: 'POST',
             url: 'CrossSiteScriptingStored/stored-xss',
             data: JSON.stringify({text: commentInput}),
             contentType: "application/json",
+            headers: headers,
             dataType: 'json'
         }).then(
             function () {
