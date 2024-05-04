@@ -171,7 +171,7 @@ public class FileServer {
         sdf.setTimeZone(timezone);
         Path path = file.toPath();
         try {
-            FileTime creationTime = (FileTime) Files.getAttribute(file.toPath(), "creationTime");
+            FileTime creationTime = (FileTime) Files.getAttribute(path, "creationTime");
             ZonedDateTime zonedDateTime = creationTime.toInstant().atZone(timezone.toZoneId());
             return dateTimeFormatter.format(zonedDateTime);
         } catch (IOException e) {
