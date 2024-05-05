@@ -34,7 +34,7 @@ import org.springframework.web.client.RestTemplate;
 public class Assignment7 extends AssignmentEndpoint {
 
     @Value("solution.admin.password.link")
-    public static String ADMIN_PASSWORD_LINK;
+    public String ADMIN_PASSWORD_LINK;
 
     private static final String TEMPLATE =
             "Hi, you requested a password reset link, please use this <a target='_blank'"

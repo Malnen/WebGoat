@@ -63,10 +63,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class JWTRefreshEndpoint extends AssignmentEndpoint {
 
     @Value("jwt.password")
-    public static String JWT_PASSWORD;
+    public String JWT_PASSWORD;
 
     @Value("jwt2.password")
-    private static String JWT2_PASSWORD;
+    private String JWT2_PASSWORD;
 
     private static final List<String> validRefreshTokens = new ArrayList<>();
 

@@ -48,7 +48,8 @@ import org.springframework.web.client.RestTemplate;
 @ExtendWith(MockitoExtension.class)
 public class Assignment7Test extends AssignmentEndpointTest {
   private MockMvc mockMvc;
-
+    @Value("solution.admin.password.link")
+    public String ADMIN_PASSWORD_LINK;
   private static final String CHALLENGE_PATH = "/challenge/7";
   private static final String RESET_PASSWORD_PATH = CHALLENGE_PATH + "/reset-password";
   private static final String GIT_PATH = CHALLENGE_PATH + "/.git";
@@ -75,7 +76,7 @@ public class Assignment7Test extends AssignmentEndpointTest {
     result =
         mockMvc.perform(
             MockMvcRequestBuilders.get(
-                RESET_PASSWORD_PATH + "/" + Assignment7.ADMIN_PASSWORD_LINK));
+                RESET_PASSWORD_PATH + "/" + ADMIN_PASSWORD_LINK));
     result.andExpect(status().is(equalTo(HttpStatus.ACCEPTED.value())));
   }
 

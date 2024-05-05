@@ -73,18 +73,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class JWTVotesEndpoint extends AssignmentEndpoint {
 
     @Value("victory.password")
-    public static String PASSWORD;
-    public static String JWT_PASSWORD;
+    public String PASSWORD;
+    public String JWT_PASSWORD;
     private static String validUsers = "TomJerrySylvester";
     private static int totalVotes = 38929;
     private Map<String, Vote> votes = new HashMap<>();
 
-    public JWTVotesEndpoint() {
-        JWT_PASSWORD = TextCodec.BASE64.encode(PASSWORD);
-    }
-
     @PostConstruct
     public void initVotes() {
+        JWT_PASSWORD = TextCodec.BASE64.encode(PASSWORD);
         votes.put(
                 "Admin lost password",
                 new Vote(

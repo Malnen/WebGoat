@@ -22,15 +22,14 @@
 
 package org.owasp.webgoat.lessons.missingac;
 
-import static org.owasp.webgoat.lessons.missingac.MissingFunctionAC.PASSWORD_SALT_ADMIN;
-import static org.owasp.webgoat.lessons.missingac.MissingFunctionAC.PASSWORD_SALT_SIMPLE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.owasp.webgoat.container.session.WebSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -42,10 +41,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 /** Created by jason on 1/5/17. */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class MissingFunctionACUsers {
+    @Value("${simple.salt.password}")
+    private String PASSWORD_SALT_SIMPLE;
 
+    @Value("${admin.salt.password}")
+    private String PASSWORD_SALT_ADMIN;
   private final MissingAccessControlUserRepository userRepository;
   private final WebSession webSession;
 

@@ -22,11 +22,11 @@
 
 package org.owasp.webgoat.lessons.missingac;
 
-import static org.owasp.webgoat.lessons.missingac.MissingFunctionAC.PASSWORD_SALT_ADMIN;
 
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
 import org.owasp.webgoat.container.assignments.AttackResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +43,10 @@ import org.springframework.web.bind.annotation.RestController;
   "access-control.hash.hint13"
 })
 public class MissingFunctionACYourHashAdmin extends AssignmentEndpoint {
-
+    @Value("simple.salt.password")
+    public String PASSWORD_SALT_SIMPLE;
+    @Value("admin.salt.password")
+    public String PASSWORD_SALT_ADMIN;
   private final MissingAccessControlUserRepository userRepository;
 
   public MissingFunctionACYourHashAdmin(MissingAccessControlUserRepository userRepository) {

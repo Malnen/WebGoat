@@ -1,7 +1,6 @@
 package org.owasp.webgoat.lessons.missingac;
 
 import static org.mockito.Mockito.when;
-import static org.owasp.webgoat.lessons.missingac.MissingFunctionAC.PASSWORD_SALT_ADMIN;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -9,11 +8,15 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.owasp.webgoat.container.plugins.LessonTest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 class MissingFunctionACYourHashAdminTest extends LessonTest {
-
+    @Value("simple.salt.password")
+    public String PASSWORD_SALT_SIMPLE;
+    @Value("admin.salt.password")
+    public String PASSWORD_SALT_ADMIN;
   @BeforeEach
   public void setup() {
     when(webSession.getCurrentLesson()).thenReturn(new MissingFunctionAC());

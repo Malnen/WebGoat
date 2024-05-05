@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
 public class InsecureLoginTask extends AssignmentEndpoint {
 
     @Value("black.pearl.password")
-    public static String BLACK_PEARL_PASSWORD;
+    public String BLACK_PEARL_PASSWORD;
 
   @PostMapping("/InsecureLogin/task")
   @ResponseBody

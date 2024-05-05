@@ -44,8 +44,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class Assignment1 extends AssignmentEndpoint {
 
-    @Value("${db.username}")
-    public static String PASSWORD;
+    @Value("${solution.password}")
+    public String PASSWORD;
 
     private final Flags flags;
 
