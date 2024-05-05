@@ -37,12 +37,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -97,7 +99,22 @@ public class WebSecurityConfig {
 
                 .csrf()
                 .and()
-                .headers()
+                .headers().xssProtection(Customizer.withDefaults())
+                .contentSecurityPolicy(contentSecurityPolicyConfig ->
+                        contentSecurityPolicyConfig.policyDirectives(
+                                "form-action 'self'; " +
+                                        "script-src 'self'; " +
+                                        "script-src 'self'; " +
+                                        "mg-src 'self'; " +
+                                        " connect-src 'self'; " +
+                                        " frame-src 'self'; " +
+                                        " frame-ancestors 'self'; " +
+                                        " font-src, media-src 'self'; " +
+                                        " object-src 'self'; " +
+                                        " manifest-src 'self'; " +
+                                        "style-src 'self'"
+                        )
+                )
                 .and()
                 .exceptionHandling(
                         handling ->
@@ -117,9 +134,8 @@ public class WebSecurityConfig {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, @Lazy BCryptPasswordEncoder passwordEncoder) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 
     @Bean
@@ -134,7 +150,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public NoOpPasswordEncoder passwordEncoder() {
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 }
