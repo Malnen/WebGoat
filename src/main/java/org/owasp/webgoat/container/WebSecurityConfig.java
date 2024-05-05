@@ -30,127 +30,101 @@
  */
 package org.owasp.webgoat.container;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.owasp.webgoat.container.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
-/**
- * Security configuration for WebGoat.
- */
+/** Security configuration for WebGoat. */
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private final UserService userDetailsService;
+  private final UserService userDetailsService;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(
-                auth ->
-                        auth.requestMatchers(
-                                "/",
-                                "/favicon.ico",
-                                "/css/**",
-                                "/images/**",
-                                "/js/**",
-                                "/lesson_css/**",
-                                "/lesson_js/**",
-                                "fonts/**",
-                                "/plugins/**",
-                                "/registration",
-                                "/register.mvc")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
-                .formLogin(
-                        login ->
-                                login
-                                        .loginPage("/login")
-                                        .defaultSuccessUrl("/welcome.mvc", true)
-                                        .usernameParameter("username")
-                                        .passwordParameter("password")
-                                        .permitAll())
-                .oauth2Login(
-                        oidc -> {
-                            oidc.defaultSuccessUrl("/login-oauth.mvc");
-                            oidc.loginPage("/login");
-                        })
-                .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http.authorizeHttpRequests(
+            auth ->
+                auth.requestMatchers(
+                        "/",
+                        "/favicon.ico",
+                        "/css/**",
+                        "/images/**",
+                        "/js/**",
+                        "fonts/**",
+                        "/plugins/**",
+                        "/registration",
+                        "/register.mvc")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .formLogin(
+            login ->
+                login
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/welcome.mvc", true)
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .permitAll())
+        .oauth2Login(
+            oidc -> {
+              oidc.defaultSuccessUrl("/login-oauth.mvc");
+              oidc.loginPage("/login");
+            })
+        .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable())
+        .headers(headers -> headers.disable())
+        .exceptionHandling(
+            handling ->
+                handling.authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/login")))
+        .build();
+  }
 
-                .csrf()
-                .and()
-                .headers().xssProtection(Customizer.withDefaults())
-                .contentSecurityPolicy(contentSecurityPolicyConfig ->
-                        contentSecurityPolicyConfig.policyDirectives(
-                                "form-action 'self'; " +
-                                        "script-src 'self'; " +
-                                        "script-src 'self'; " +
-                                        "mg-src 'self'; " +
-                                        " connect-src 'self'; " +
-                                        " frame-src 'self'; " +
-                                        " frame-ancestors 'self'; " +
-                                        " font-src, media-src 'self'; " +
-                                        " object-src 'self'; " +
-                                        " manifest-src 'self'; " +
-                                        "style-src 'self'"
-                        )
-                )
-                .and()
-                .exceptionHandling(
-                        handling ->
-                                handling.authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/login")))
-                .build();
-    }
+  private CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.addAllowedOriginPattern(CorsConfiguration.ALL);
+    configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
+    configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
+    configuration.setAllowCredentials(true);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
 
-    private CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern(CorsConfiguration.ALL);
-        configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
-        configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService);
+  }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
+  @Bean
+  public UserDetailsService userDetailsServiceBean() {
+    return userDetailsService;
+  }
 
-    @Bean
-    public UserDetailsService userDetailsServiceBean() {
-        return userDetailsService;
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public NoOpPasswordEncoder passwordEncoder() {
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }
+  @Bean
+  public NoOpPasswordEncoder passwordEncoder() {
+    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+  }
 }
