@@ -101,7 +101,9 @@ public class FileServer {
         // Sanitize the filename to prevent path traversal attacks
         String safeFilename = sanitizeFilename(originalFilename);
 
-        Path basePath = Paths.get(fileLocation).toAbsolutePath().normalize();
+        Path path = Paths.get(fileLocation);
+        Path absolutePath = path.toAbsolutePath();
+        Path basePath = absolutePath.normalize();
         Path userDirPath = basePath.resolve(safeUsername).normalize();
 
         if (!userDirPath.startsWith(basePath)) {
@@ -135,8 +137,10 @@ public class FileServer {
         // Check if a file upload success indicator file exists
         File changeIndicatorFile = new File(destinationDir, username + "_changed");
         Path changeIndicatorPath = Paths.get(changeIndicatorFile.getAbsolutePath()).normalize();
-        changeIndicatorPath.toFile().delete(); // Securely remove the indicator file
-
+        File changeIndicatorFileSafe = changeIndicatorPath.toFile();
+        if (changeIndicatorFileSafe != null) {
+            changeIndicatorFileSafe.delete(); // Securely remove the indicator file
+        }
 
         // Define a record to store file details
         record UploadedFile(String name, String size, String link, String creationTime) {

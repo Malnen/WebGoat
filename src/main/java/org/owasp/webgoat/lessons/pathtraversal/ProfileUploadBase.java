@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
@@ -74,7 +75,13 @@ public class ProfileUploadBase extends AssignmentEndpoint {
 
     private String sanitizeFileName(String inputName) {
         // Remove any path traversal characters or sequences
-        return Paths.get(inputName).getFileName().toString();
+        Path path = Paths.get(inputName);
+        Path fileName = path.getFileName();
+        if (fileName == null) {
+            return "";
+        }
+
+        return fileName.toString();
     }
 
     private boolean attemptWasMade(File expectedUploadDirectory, File uploadedFile) throws IOException {
